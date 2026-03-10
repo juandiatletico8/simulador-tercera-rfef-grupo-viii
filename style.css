@@ -1,0 +1,164 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f5f7;
+  margin: 0;
+  padding: 0;
+  color: #222;
+}
+
+.contenedor {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+h1 {
+  margin-bottom: 8px;
+}
+
+.subtitulo {
+  margin-top: 0;
+  color: #555;
+}
+
+.estado {
+  margin: 14px 0 20px 0;
+  padding: 10px 12px;
+  background: #fff8db;
+  border: 1px solid #ead67a;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.bloque-jornada {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+}
+
+.bloque-jornada h3 {
+  margin-top: 0;
+  margin-bottom: 14px;
+}
+
+.fila-partido {
+  display: grid;
+  grid-template-columns: 1fr 60px 30px 60px 1fr;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.equipo-local {
+  text-align: right;
+}
+
+.equipo-visitante {
+  text-align: left;
+}
+
+.guion {
+  text-align: center;
+}
+
+input[type="number"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 7px;
+  text-align: center;
+}
+
+.zona-boton {
+  margin: 20px 0;
+}
+
+button {
+  padding: 12px 18px;
+  background: #4b0082;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #5c1296;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+th {
+  background: #f0f0f0;
+}
+
+td:nth-child(2), th:nth-child(2) {
+  text-align: left;
+}
+
+.pos-ascenso {
+  background: #d8f5d0;
+}
+
+.pos-playoff {
+  background: #ffe8c2;
+}
+
+.pos-descenso {
+  background: #ffd6d6;
+}
+
+.layout-principal {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 24px;
+  align-items: start;
+  padding: 0 24px 24px 24px;
+}
+
+.panel-jornada,
+.panel-clasificacion {
+  background: transparent;
+}
+
+.navegacion-jornada {
+  display: grid;
+  grid-template-columns: 56px 1fr 56px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.navegacion-jornada h2 {
+  margin: 0;
+  text-align: center;
+}
+
+.navegacion-jornada button {
+  padding: 10px 0;
+}
+
+#partidos {
+  min-height: 200px;
+}
+
+#tabla-clasificacion {
+  background: white;
+}
+
+@media (max-width: 900px) {
+  .layout-principal {
+    grid-template-columns: 1fr;
+  }
+}
