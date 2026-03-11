@@ -162,3 +162,125 @@ td:nth-child(2), th:nth-child(2) {
     grid-template-columns: 1fr;
   }
 }
+
+.escudo {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+.celda-equipo {
+  text-align: left;
+  white-space: nowrap;
+}
+
+.equipo-local,
+.equipo-visitante {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.equipo-local {
+  justify-content: flex-end;
+}
+
+.equipo-visitante {
+  justify-content: flex-start;
+}
+
+.equipo-con-escudo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.escudo {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.col-puntos {
+  font-weight: 800;
+  font-size: 16px;
+}
+
+/* Columna de puntos destacada */
+.col-puntos {
+  font-weight: 800;
+  font-size: 16px;
+  background-color: #f2f2f2;
+  border-right: 2px solid #d0d0d0;
+}
+
+/* Cabecera de la columna puntos */
+#tabla-clasificacion th:nth-child(3) {
+  background-color: #f2f2f2;
+  border-right: 2px solid #d0d0d0;
+}
+
+/* Columna de puntos destacada */
+.col-puntos {
+  font-weight: 800;
+  font-size: 16px;
+  background-color: #f2f2f2;
+  border-right: 2px solid #d0d0d0;
+}
+
+/* Cabecera de la columna puntos */
+#tabla-clasificacion th:nth-child(3) {
+  background-color: #f2f2f2;
+  border-right: 2px solid #d0d0d0;
+}
+
+/* Barra lateral de posiciones */
+
+.pos-ascenso td:first-child {
+  border-left: 6px solid #2ecc71;
+}
+
+.pos-playoff td:first-child {
+  border-left: 6px solid #f39c12;
+}
+
+.pos-descenso td:first-child {
+  border-left: 6px solid #e74c3c;
+}
+
+/* Barra lateral de posiciones */
+
+.pos-ascenso td:first-child {
+  border-left: 6px solid #2ecc71;
+}
+
+.pos-playoff td:first-child {
+  border-left: 6px solid #f39c12;
+}
+
+.pos-descenso td:first-child {
+  border-left: 6px solid #e74c3c;
+}
+
+window.onload = function () {
+  reiniciarReferenciaJornada();
+  mostrarPartidos();
+  calcularClasificacion();
+
+  const boton = document.getElementById("calcular");
+  if (boton) {
+    boton.addEventListener("click", calcularClasificacion);
+  }
+
+  const btnAnterior = document.getElementById("btn-anterior");
+  if (btnAnterior) {
+    btnAnterior.addEventListener("click", irAJornadaAnterior);
+  }
+
+  const btnSiguiente = document.getElementById("btn-siguiente");
+  if (btnSiguiente) {
+    btnSiguiente.addEventListener("click", irAJornadaSiguiente);
+  }
+};

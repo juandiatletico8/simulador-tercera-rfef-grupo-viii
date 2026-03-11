@@ -19,6 +19,26 @@ const equipos = [
   "Unionistas de Salamanca CF B"
 ];
 
+const escudos = {
+  "Arandina CF": "escudos/arandina.png",
+  "Atlético Bembibre": "escudos/bembibre.png",
+  "Atlético Mansillés": "escudos/mansilles.png",
+  "Atlético Tordesillas": "escudos/tordesillas.png",
+  "CD Becerril": "escudos/becerril.png",
+  "CD Colegios Diocesanos": "escudos/diocesanos.png",
+  "CD Guijuelo": "escudos/guijuelo.png",
+  "CD La Virgen del Camino": "escudos/lavirgen.png",
+  "CD Mirandés B": "escudos/mirandesb.png",
+  "CD Mojados": "escudos/mojados.png",
+  "CD Numancia de Soria B": "escudos/numanciab.png",
+  "CD Palencia Cristo Atlético": "escudos/cristo.png",
+  "CD Villaralbo": "escudos/villaralbo.png",
+  "Júpiter Leonés": "escudos/jupiter.png",
+  "Palencia CF": "escudos/palencia.png",
+  "SD Almazán": "escudos/almazan.png",
+  "UD Santa Marta de Tormes": "escudos/santamarta.png",
+  "Unionistas de Salamanca CF B": "escudos/unionistasb.png"
+};
 
  const partidos = [
 // Jornada 1
@@ -399,6 +419,7 @@ const equipos = [
 
 let jornadasDisponibles = [];
 let jornadaActual = 26;
+let posicionesBaseJornada = {};
 
 function crearTablaBase() {
   const tabla = {};
@@ -506,6 +527,29 @@ function compararEquipos(a, b) {
   return a.equipo.localeCompare(b.equipo, "es");
 }
 
+function obtenerPosicionesClasificacionActual() {
+  const tabla = crearTablaBase();
+
+  for (let i = 0; i < partidos.length; i++) {
+    const p = partidos[i];
+    if (!partidoJugado(p)) continue;
+    aplicarPartido(tabla, p.local, p.visitante, p.gLocal, p.gVis);
+  }
+
+  const clasificacion = Object.values(tabla).sort(compararEquipos);
+  const posiciones = {};
+
+  for (let i = 0; i < clasificacion.length; i++) {
+    posiciones[clasificacion[i].equipo] = i + 1;
+  }
+
+  return posiciones;
+}
+
+function reiniciarReferenciaJornada() {
+  posicionesBaseJornada = obtenerPosicionesClasificacionActual();
+}
+
 function construirListaJornadas() {
   jornadasDisponibles = [];
   for (let i = 0; i < partidos.length; i++) {
@@ -607,25 +651,72 @@ function leerResultados() {
   }
 }
 
+function animarCambiosTabla(tbody, posicionesAntes) {
+  const filas = tbody.querySelectorAll("tr");
+
+  filas.forEach((fila) => {
+    const equipo = fila.dataset.equipo;
+    const topAntes = posicionesAntes[equipo];
+
+    if (topAntes === undefined) return;
+
+    const topDespues = fila.getBoundingClientRect().top;
+    const deltaY = topAntes - topDespues;
+
+    if (deltaY !== 0) {
+      fila.classList.add("fila-animando");
+      fila.style.transition = "none";
+      fila.style.transform = `translateY(${deltaY}px)`;
+
+      requestAnimationFrame(() => {
+        fila.style.transition = "transform 500ms ease";
+        fila.style.transform = "translateY(0)";
+      });
+
+      fila.addEventListener(
+        "transitionend",
+        () => {
+          fila.classList.remove("fila-animando");
+          fila.style.transition = "";
+          fila.style.transform = "";
+        },
+        { once: true }
+      );
+    }
+  });
+}
+
 function calcularClasificacion() {
+  leerResultados();
+
   const tabla = crearTablaBase();
 
   for (let i = 0; i < partidos.length; i++) {
     const p = partidos[i];
-    if (!partidoJugado(p)) continue;
+
+    if (!partidoJugado(p)) {
+      continue;
+    }
+
     aplicarPartido(tabla, p.local, p.visitante, p.gLocal, p.gVis);
   }
 
   const clasificacion = Object.values(tabla).sort(compararEquipos);
 
   const tbody = document.querySelector("#tabla-clasificacion tbody");
-  if (!tbody) return;
+
+  const posicionesAntes = {};
+  const filasActuales = tbody.querySelectorAll("tr");
+  filasActuales.forEach((fila) => {
+    posicionesAntes[fila.dataset.equipo] = fila.getBoundingClientRect().top;
+  });
 
   tbody.innerHTML = "";
 
   for (let i = 0; i < clasificacion.length; i++) {
     const e = clasificacion[i];
     const tr = document.createElement("tr");
+    tr.dataset.equipo = e.equipo;
 
     if (i === 0) {
       tr.classList.add("pos-ascenso");
@@ -635,29 +726,52 @@ function calcularClasificacion() {
       tr.classList.add("pos-descenso");
     }
 
-    tr.innerHTML =
-      "<td>" + (i + 1) + "</td>" +
-      "<td>" + e.equipo + "</td>" +
-      "<td>" + e.PJ + "</td>" +
-      "<td>" + e.PG + "</td>" +
-      "<td>" + e.PE + "</td>" +
-      "<td>" + e.PP + "</td>" +
-      "<td>" + e.GF + "</td>" +
-      "<td>" + e.GC + "</td>" +
-      "<td>" + (e.GF - e.GC) + "</td>" +
-      "<td>" + e.PTS + "</td>";
+    let flecha = "";
+const posicionBase = posicionesBaseJornada[e.equipo];
+const posicionActual = i + 1;
+
+if (posicionBase !== undefined) {
+  if (posicionActual < posicionBase) {
+    flecha = '<span class="flecha-sube">▲</span>';
+  } else if (posicionActual > posicionBase) {
+    flecha = '<span class="flecha-baja">▼</span>';
+  }
+}
+
+tr.innerHTML =
+  `<td>${posicionActual} ${flecha}</td>
+   <td>
+     <div class="equipo-con-escudo">
+       <img class="escudo" src="${obtenerEscudo(e.equipo)}" alt="${e.equipo}">
+       <span>${e.equipo}</span>
+     </div>
+   </td>
+   <td class="col-puntos">${e.PTS}</td>
+   <td>${e.PJ}</td>
+   <td>${e.PG}</td>
+   <td>${e.PE}</td>
+   <td>${e.PP}</td>
+   <td>${e.GF}</td>
+   <td>${e.GC}</td>
+   <td>${e.GF - e.GC}</td>`;
 
     tbody.appendChild(tr);
   }
 
+  requestAnimationFrame(() => {
+    animarCambiosTabla(tbody, posicionesAntes);
+  });
+
   const jugados = partidos.filter(partidoJugado).length;
   const estado = document.getElementById("estado");
   if (estado) {
-    estado.textContent = "Partidos contabilizados: " + jugados;
+    estado.textContent = "Clasificación actualizada. Partidos contabilizados: " + jugados;
   }
 }
 
 function actualizarBotonesJornada() {
+  construirListaJornadas();
+
   const indice = jornadasDisponibles.indexOf(jornadaActual);
 
   const btnAnterior = document.getElementById("btn-anterior");
@@ -668,27 +782,41 @@ function actualizarBotonesJornada() {
   }
 
   if (btnSiguiente) {
-    btnSiguiente.disabled = indice >= jornadasDisponibles.length - 1;
+    btnSiguiente.disabled = indice === -1 || indice >= jornadasDisponibles.length - 1;
   }
 }
 
 function irAJornadaAnterior() {
+  construirListaJornadas();
+
   const indice = jornadasDisponibles.indexOf(jornadaActual);
   if (indice > 0) {
     jornadaActual = jornadasDisponibles[indice - 1];
+    reiniciarReferenciaJornada();
     mostrarPartidos();
+    calcularClasificacion();
   }
 }
 
 function irAJornadaSiguiente() {
+  construirListaJornadas();
+
   const indice = jornadasDisponibles.indexOf(jornadaActual);
-  if (indice < jornadasDisponibles.length - 1) {
+  if (indice !== -1 && indice < jornadasDisponibles.length - 1) {
     jornadaActual = jornadasDisponibles[indice + 1];
+    reiniciarReferenciaJornada();
     mostrarPartidos();
+    calcularClasificacion();
   }
 }
 
+function obtenerEscudo(equipo) {
+  return escudos[equipo] || "";
+}
+
+
 window.onload = function () {
+  reiniciarReferenciaJornada();
   mostrarPartidos();
   calcularClasificacion();
 
