@@ -317,15 +317,16 @@ const escudos = {
 { jornada: 25, local: "Atlético Tordesillas", visitante: "CD La Virgen del Camino", gLocal: 1, gVis: 0 },
 
 // Jornada 26
-{ jornada: 26, local: "CD La Virgen del Camino", visitante: "Atlético Mansillés", gLocal: null, gVis: null },
-{ jornada: 26, local: "UD Santa Marta de Tormes", visitante: "Atlético Tordesillas", gLocal: null, gVis: null },
-{ jornada: 26, local: "Atlético Bembibre", visitante: "CD Numancia de Soria B", gLocal: null, gVis: null },
-{ jornada: 26, local: "Palencia CF", visitante: "CD Colegios Diocesanos", gLocal: null, gVis: null },
-{ jornada: 26, local: "Arandina CF", visitante: "CD Palencia Cristo Atlético", gLocal: null, gVis: null },
-{ jornada: 26, local: "Júpiter Leonés", visitante: "CD Mirandés B", gLocal: null, gVis: null },
-{ jornada: 26, local: "SD Almazán", visitante: "Unionistas de Salamanca CF B", gLocal: null, gVis: null },
-{ jornada: 26, local: "CD Becerril", visitante: "CD Villaralbo", gLocal: null, gVis: null },
-{ jornada: 26, local: "CD Mojados", visitante: "CD Guijuelo", gLocal: null, gVis: null },
+// Jornada 26
+{ jornada: 26, local: "CD La Virgen del Camino", visitante: "Atlético Mansillés", gLocal: 0, gVis: 0 },
+{ jornada: 26, local: "UD Santa Marta de Tormes", visitante: "Atlético Tordesillas", gLocal: 1, gVis: 2 },
+{ jornada: 26, local: "Palencia CF", visitante: "CD Colegios Diocesanos", gLocal: 2, gVis: 1 },
+{ jornada: 26, local: "Atlético Bembibre", visitante: "CD Numancia de Soria B", gLocal: 2, gVis: 0 },
+{ jornada: 26, local: "Arandina CF", visitante: "CD Palencia Cristo Atlético", gLocal: 0, gVis: 2 },
+{ jornada: 26, local: "Júpiter Leonés", visitante: "CD Mirandés B", gLocal: 2, gVis: 0 },
+{ jornada: 26, local: "SD Almazán", visitante: "Unionistas de Salamanca CF B", gLocal: 3, gVis: 0 },
+{ jornada: 26, local: "CD Becerril", visitante: "CD Villaralbo", gLocal: 0, gVis: 0 },
+{ jornada: 26, local: "CD Mojados", visitante: "CD Guijuelo", gLocal: 3, gVis: 1 },
 
 // Jornada 27
 { jornada: 27, local: "CD Villaralbo", visitante: "Palencia CF", gLocal: null, gVis: null },
@@ -420,6 +421,7 @@ const escudos = {
 let jornadasDisponibles = [];
 let jornadaActual = 26;
 let posicionesBaseJornada = {};
+let simulacionFinalizada = false;
 
 function crearTablaBase() {
   const tabla = {};
@@ -442,12 +444,27 @@ function crearTablaBase() {
 
 function asegurarDirecto(tabla, eq1, eq2) {
   if (!tabla[eq1].directos[eq2]) {
-    tabla[eq1].directos[eq2] = { puntos: 0, gf: 0, gc: 0 };
+    tabla[eq1].directos[eq2] = {
+      partidos: 0,
+      puntos: 0,
+      gf: 0,
+      gc: 0
+    };
   }
 }
 
 function partidoJugado(p) {
   return Number.isInteger(p.gLocal) && Number.isInteger(p.gVis);
+}
+
+function jornadaCompleta(numeroJornada) {
+  for (let i = 0; i < partidos.length; i++) {
+    const p = partidos[i];
+    if (p.jornada === numeroJornada && !partidoJugado(p)) {
+      return false;
+    }
+  }
+  return true;
 }
 
 function aplicarPartido(tabla, local, visitante, gl, gv) {
@@ -464,6 +481,9 @@ function aplicarPartido(tabla, local, visitante, gl, gv) {
 
   asegurarDirecto(tabla, local, visitante);
   asegurarDirecto(tabla, visitante, local);
+
+  tabla[local].directos[visitante].partidos += 1;
+  tabla[visitante].directos[local].partidos += 1;
 
   tabla[local].directos[visitante].gf += gl;
   tabla[local].directos[visitante].gc += gv;
@@ -490,7 +510,17 @@ function aplicarPartido(tabla, local, visitante, gl, gv) {
   }
 }
 
-function compararEquipos(a, b) {
+function compararPorGeneral(a, b) {
+  const dgA = a.GF - a.GC;
+  const dgB = b.GF - b.GC;
+
+  if (dgB !== dgA) return dgB - dgA;
+  if (b.GF !== a.GF) return b.GF - a.GF;
+
+  return a.equipo.localeCompare(b.equipo, "es");
+}
+
+function compararDosEquipos(a, b) {
   if (b.PTS !== a.PTS) {
     return b.PTS - a.PTS;
   }
@@ -498,7 +528,8 @@ function compararEquipos(a, b) {
   const da = a.directos[b.equipo];
   const db = b.directos[a.equipo];
 
-  if (da && db) {
+  // Solo vale el enfrentamiento directo si están jugados LOS DOS partidos
+  if (da && db && da.partidos === 2 && db.partidos === 2) {
     if (db.puntos !== da.puntos) {
       return db.puntos - da.puntos;
     }
@@ -514,17 +545,134 @@ function compararEquipos(a, b) {
     }
   }
 
-  const dgA = a.GF - a.GC;
-  const dgB = b.GF - b.GC;
-  if (dgB !== dgA) {
-    return dgB - dgA;
+  return compararPorGeneral(a, b);
+}
+
+function estanTodosLosPartidosMiniLiga(grupo) {
+  const n = grupo.length;
+  const partidosEsperadosPorEquipo = (n - 1) * 2;
+
+  for (let i = 0; i < grupo.length; i++) {
+    let jugados = 0;
+    const eq = grupo[i];
+
+    for (let j = 0; j < grupo.length; j++) {
+      if (i === j) continue;
+      const rival = grupo[j];
+
+      if (eq.directos[rival.equipo]) {
+        jugados += eq.directos[rival.equipo].partidos;
+      }
+    }
+
+    if (jugados !== partidosEsperadosPorEquipo) {
+      return false;
+    }
   }
 
-  if (b.GF !== a.GF) {
-    return b.GF - a.GF;
+  return true;
+}
+
+function crearMiniClasificacion(grupo) {
+  const mini = {};
+
+  for (let i = 0; i < grupo.length; i++) {
+    const e = grupo[i];
+    mini[e.equipo] = {
+      equipo: e.equipo,
+      PTS: 0,
+      GF: 0,
+      GC: 0
+    };
   }
 
-  return a.equipo.localeCompare(b.equipo, "es");
+  for (let i = 0; i < grupo.length; i++) {
+    const e = grupo[i];
+
+    for (let j = 0; j < grupo.length; j++) {
+      if (i === j) continue;
+
+      const rival = grupo[j];
+      const dir = e.directos[rival.equipo];
+
+      if (dir) {
+        mini[e.equipo].PTS += dir.puntos;
+        mini[e.equipo].GF += dir.gf;
+        mini[e.equipo].GC += dir.gc;
+      }
+    }
+  }
+
+  return mini;
+}
+
+function ordenarGrupoEmpatado(grupo) {
+  if (grupo.length === 1) return grupo;
+
+  if (grupo.length === 2) {
+    return grupo.slice().sort(compararDosEquipos);
+  }
+
+  // 3 o más empatados: miniclasificación SOLO si están todos los partidos
+  if (estanTodosLosPartidosMiniLiga(grupo)) {
+    const mini = crearMiniClasificacion(grupo);
+
+    return grupo.slice().sort((a, b) => {
+      const ma = mini[a.equipo];
+      const mb = mini[b.equipo];
+
+      if (mb.PTS !== ma.PTS) {
+        return mb.PTS - ma.PTS;
+      }
+
+      const dgMiniA = ma.GF - ma.GC;
+      const dgMiniB = mb.GF - mb.GC;
+      if (dgMiniB !== dgMiniA) {
+        return dgMiniB - dgMiniA;
+      }
+
+      if (mb.GF !== ma.GF) {
+        return mb.GF - ma.GF;
+      }
+
+      return compararPorGeneral(a, b);
+    });
+  }
+
+  // Si no está completa la miniliga, ir a DG general
+  return grupo.slice().sort(compararPorGeneral);
+}
+
+function ordenarClasificacionConEmpates(clasificacionBase) {
+  const grupos = [];
+  let grupoActual = [];
+
+  for (let i = 0; i < clasificacionBase.length; i++) {
+    const equipo = clasificacionBase[i];
+
+    if (grupoActual.length === 0) {
+      grupoActual.push(equipo);
+      continue;
+    }
+
+    if (equipo.PTS === grupoActual[0].PTS) {
+      grupoActual.push(equipo);
+    } else {
+      grupos.push(grupoActual);
+      grupoActual = [equipo];
+    }
+  }
+
+  if (grupoActual.length > 0) {
+    grupos.push(grupoActual);
+  }
+
+  let resultado = [];
+  for (let i = 0; i < grupos.length; i++) {
+    resultado = resultado.concat(ordenarGrupoEmpatado(grupos[i]));
+  }
+
+  return resultado;
 }
 
 function obtenerPosicionesClasificacionActual() {
@@ -536,7 +684,12 @@ function obtenerPosicionesClasificacionActual() {
     aplicarPartido(tabla, p.local, p.visitante, p.gLocal, p.gVis);
   }
 
-  const clasificacion = Object.values(tabla).sort(compararEquipos);
+  const clasificacionBase = Object.values(tabla).sort((a, b) => {
+    if (b.PTS !== a.PTS) return b.PTS - a.PTS;
+    return a.equipo.localeCompare(b.equipo, "es");
+  });
+
+  const clasificacion = ordenarClasificacionConEmpates(clasificacionBase);
   const posiciones = {};
 
   for (let i = 0; i < clasificacion.length; i++) {
@@ -560,6 +713,24 @@ function construirListaJornadas() {
   jornadasDisponibles.sort(function (a, b) {
     return a - b;
   });
+}
+
+function obtenerPrimeraJornadaPendiente() {
+  construirListaJornadas();
+
+  for (let j = 0; j < jornadasDisponibles.length; j++) {
+    const numeroJornada = jornadasDisponibles[j];
+
+    for (let i = 0; i < partidos.length; i++) {
+      const p = partidos[i];
+      if (p.jornada === numeroJornada && !partidoJugado(p)) {
+        return numeroJornada;
+      }
+    }
+  }
+
+  // Si todas están completas, ir a la última
+  return jornadasDisponibles[jornadasDisponibles.length - 1];
 }
 
 function mostrarPartidos() {
@@ -591,7 +762,9 @@ function mostrarPartidos() {
 
     const spanLocal = document.createElement("span");
     spanLocal.className = "equipo-local";
-    spanLocal.textContent = p.local;
+    spanLocal.innerHTML =
+      `<img class="escudo" src="${obtenerEscudo(p.local)}" alt="${p.local}">
+       <span>${p.local}</span>`;
 
     const inputLocal = document.createElement("input");
     inputLocal.type = "number";
@@ -611,7 +784,9 @@ function mostrarPartidos() {
 
     const spanVis = document.createElement("span");
     spanVis.className = "equipo-visitante";
-    spanVis.textContent = p.visitante;
+    spanVis.innerHTML =
+      `<img class="escudo" src="${obtenerEscudo(p.visitante)}" alt="${p.visitante}">
+       <span>${p.visitante}</span>`;
 
     fila.appendChild(spanLocal);
     fila.appendChild(inputLocal);
@@ -640,7 +815,6 @@ function leerResultados() {
     const gl = document.getElementById("gl" + i);
     const gv = document.getElementById("gv" + i);
 
-    // Solo leer los inputs que estén visibles en la jornada actual
     if (!gl || !gv) continue;
 
     const valorLocal = gl.value.trim();
@@ -649,6 +823,71 @@ function leerResultados() {
     partidos[i].gLocal = valorLocal === "" ? null : parseInt(valorLocal, 10);
     partidos[i].gVis = valorVis === "" ? null : parseInt(valorVis, 10);
   }
+}
+
+function obtenerClasificacionActual() {
+  const tabla = crearTablaBase();
+
+  for (let i = 0; i < partidos.length; i++) {
+    const p = partidos[i];
+    if (!partidoJugado(p)) continue;
+    aplicarPartido(tabla, p.local, p.visitante, p.gLocal, p.gVis);
+  }
+
+  const clasificacionBase = Object.values(tabla).sort((a, b) => {
+    if (b.PTS !== a.PTS) return b.PTS - a.PTS;
+    return a.equipo.localeCompare(b.equipo, "es");
+  });
+
+  return ordenarClasificacionConEmpates(clasificacionBase);
+}
+
+function renderizarResumenFinal(clasificacion) {
+  const contenedor = document.getElementById("partidos");
+  if (!contenedor) return;
+
+  const campeon = clasificacion[0];
+  const playoff = clasificacion.slice(1, 5);
+  const descenso = clasificacion.slice(-3);
+
+  function renderEquipoResumen(equipo) {
+    return `
+      <span class="equipo-resumen">
+        <img class="escudo" src="${obtenerEscudo(equipo.equipo)}" alt="${equipo.equipo}">
+        <span>${equipo.equipo}</span>
+      </span>
+    `;
+  }
+
+  contenedor.innerHTML = `
+    <div class="resumen-final">
+      <h3>Resumen final de la liga</h3>
+
+      <div class="linea-resumen">
+        <span class="punto-resumen punto-verde"></span>
+        <div>
+          <strong>Asciende a 2ª RFEF:</strong>
+          ${renderEquipoResumen(campeon)}
+        </div>
+      </div>
+
+      <div class="linea-resumen">
+        <span class="punto-resumen punto-naranja"></span>
+        <div>
+          <strong>Play-off:</strong>
+          ${playoff.map(renderEquipoResumen).join("")}
+        </div>
+      </div>
+
+      <div class="linea-resumen">
+        <span class="punto-resumen punto-rojo"></span>
+        <div>
+          <strong>Descienden a Regional:</strong>
+          ${descenso.map(renderEquipoResumen).join("")}
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 function animarCambiosTabla(tbody, posicionesAntes) {
@@ -689,19 +928,7 @@ function animarCambiosTabla(tbody, posicionesAntes) {
 function calcularClasificacion() {
   leerResultados();
 
-  const tabla = crearTablaBase();
-
-  for (let i = 0; i < partidos.length; i++) {
-    const p = partidos[i];
-
-    if (!partidoJugado(p)) {
-      continue;
-    }
-
-    aplicarPartido(tabla, p.local, p.visitante, p.gLocal, p.gVis);
-  }
-
-  const clasificacion = Object.values(tabla).sort(compararEquipos);
+  const clasificacion = obtenerClasificacionActual();
 
   const tbody = document.querySelector("#tabla-clasificacion tbody");
 
@@ -727,33 +954,33 @@ function calcularClasificacion() {
     }
 
     let flecha = "";
-const posicionBase = posicionesBaseJornada[e.equipo];
-const posicionActual = i + 1;
+    const posicionBase = posicionesBaseJornada[e.equipo];
+    const posicionActual = i + 1;
 
-if (posicionBase !== undefined) {
-  if (posicionActual < posicionBase) {
-    flecha = '<span class="flecha-sube">▲</span>';
-  } else if (posicionActual > posicionBase) {
-    flecha = '<span class="flecha-baja">▼</span>';
-  }
-}
+    if (posicionBase !== undefined) {
+      if (posicionActual < posicionBase) {
+        flecha = '<span class="flecha-sube">▲</span>';
+      } else if (posicionActual > posicionBase) {
+        flecha = '<span class="flecha-baja">▼</span>';
+      }
+    }
 
-tr.innerHTML =
-  `<td>${posicionActual} ${flecha}</td>
-   <td>
-     <div class="equipo-con-escudo">
-       <img class="escudo" src="${obtenerEscudo(e.equipo)}" alt="${e.equipo}">
-       <span>${e.equipo}</span>
-     </div>
-   </td>
-   <td class="col-puntos">${e.PTS}</td>
-   <td>${e.PJ}</td>
-   <td>${e.PG}</td>
-   <td>${e.PE}</td>
-   <td>${e.PP}</td>
-   <td>${e.GF}</td>
-   <td>${e.GC}</td>
-   <td>${e.GF - e.GC}</td>`;
+    tr.innerHTML =
+      `<td>${posicionActual} ${flecha}</td>
+       <td>
+         <div class="equipo-con-escudo">
+           <img class="escudo" src="${obtenerEscudo(e.equipo)}" alt="${e.equipo}">
+           <span>${e.equipo}</span>
+         </div>
+       </td>
+       <td class="col-puntos">${e.PTS}</td>
+       <td>${e.PJ}</td>
+       <td>${e.PG}</td>
+       <td>${e.PE}</td>
+       <td>${e.PP}</td>
+       <td>${e.GF}</td>
+       <td>${e.GC}</td>
+       <td>${e.GF - e.GC}</td>`;
 
     tbody.appendChild(tr);
   }
@@ -772,16 +999,34 @@ tr.innerHTML =
 function actualizarBotonesJornada() {
   construirListaJornadas();
 
-  const indice = jornadasDisponibles.indexOf(jornadaActual);
-
   const btnAnterior = document.getElementById("btn-anterior");
   const btnSiguiente = document.getElementById("btn-siguiente");
 
-  if (btnAnterior) {
-    btnAnterior.disabled = indice <= 0;
+  if (!btnAnterior || !btnSiguiente) return;
+
+  // Si estamos en la pantalla final
+  if (simulacionFinalizada) {
+    btnAnterior.disabled = false;
+    btnAnterior.style.display = "";
+    btnSiguiente.style.display = "none";
+    return;
   }
 
-  if (btnSiguiente) {
+  const indice = jornadasDisponibles.indexOf(jornadaActual);
+
+  btnAnterior.style.display = "";
+  btnSiguiente.style.display = "";
+
+  btnAnterior.disabled = indice <= 0;
+
+  const esUltimaJornada = indice === jornadasDisponibles.length - 1;
+  const ultimaJornadaCompleta = jornadaCompleta(jornadaActual);
+
+  if (esUltimaJornada && ultimaJornadaCompleta) {
+    btnSiguiente.disabled = false;
+    btnSiguiente.textContent = "Finalizar";
+  } else {
+    btnSiguiente.textContent = "→";
     btnSiguiente.disabled = indice === -1 || indice >= jornadasDisponibles.length - 1;
   }
 }
@@ -789,7 +1034,32 @@ function actualizarBotonesJornada() {
 function irAJornadaAnterior() {
   construirListaJornadas();
 
+  const btnSiguiente = document.getElementById("btn-siguiente");
+  const botonCalcular = document.getElementById("calcular");
+
+  // Si estamos en la pantalla final, volver a la última jornada
+  if (simulacionFinalizada) {
+    simulacionFinalizada = false;
+
+    jornadaActual = jornadasDisponibles[jornadasDisponibles.length - 1];
+
+    if (btnSiguiente) {
+      btnSiguiente.style.display = "";
+      btnSiguiente.textContent = "→";
+    }
+
+    if (botonCalcular) {
+      botonCalcular.style.display = "";
+    }
+
+    reiniciarReferenciaJornada();
+    mostrarPartidos();
+    calcularClasificacion();
+    return;
+  }
+
   const indice = jornadasDisponibles.indexOf(jornadaActual);
+
   if (indice > 0) {
     jornadaActual = jornadasDisponibles[indice - 1];
     reiniciarReferenciaJornada();
@@ -798,10 +1068,82 @@ function irAJornadaAnterior() {
   }
 }
 
+function finalizarSimulacion() {
+  leerResultados();
+
+  const clasificacion = obtenerClasificacionActual();
+  simulacionFinalizada = true;
+
+  const btnSiguiente = document.getElementById("btn-siguiente");
+  if (btnSiguiente) {
+    btnSiguiente.style.display = "none";
+  }
+
+  const titulo = document.getElementById("titulo-jornada");
+  if (titulo) {
+    titulo.textContent = "Resumen final";
+  }
+
+  const botonCalcular = document.getElementById("calcular");
+  if (botonCalcular) {
+    botonCalcular.style.display = "none";
+  }
+
+  renderizarResumenFinal(clasificacion);
+  calcularClasificacion();
+
+  const estado = document.getElementById("estado");
+  if (estado) {
+    estado.textContent = "Simulación finalizada.";
+  }
+}
+
+function finalizarSimulacion() {
+  leerResultados();
+
+  const clasificacion = obtenerClasificacionActual();
+  simulacionFinalizada = true;
+
+  const btnSiguiente = document.getElementById("btn-siguiente");
+  if (btnSiguiente) {
+    btnSiguiente.style.display = "none";
+  }
+
+  const titulo = document.getElementById("titulo-jornada");
+  if (titulo) {
+    titulo.textContent = "Resumen final";
+  }
+
+  const botonCalcular = document.getElementById("calcular");
+  if (botonCalcular) {
+    botonCalcular.style.display = "none";
+  }
+
+  renderizarResumenFinal(clasificacion);
+  calcularClasificacion();
+
+  const estado = document.getElementById("estado");
+  if (estado) {
+    estado.textContent = "Simulación finalizada.";
+  }
+
+  actualizarBotonesJornada();
+}
+
 function irAJornadaSiguiente() {
   construirListaJornadas();
 
+  if (simulacionFinalizada) return;
+
   const indice = jornadasDisponibles.indexOf(jornadaActual);
+  const esUltimaJornada = indice === jornadasDisponibles.length - 1;
+  const ultimaJornadaCompleta = jornadaCompleta(jornadaActual);
+
+  if (esUltimaJornada && ultimaJornadaCompleta) {
+    finalizarSimulacion();
+    return;
+  }
+
   if (indice !== -1 && indice < jornadasDisponibles.length - 1) {
     jornadaActual = jornadasDisponibles[indice + 1];
     reiniciarReferenciaJornada();
@@ -814,8 +1156,8 @@ function obtenerEscudo(equipo) {
   return escudos[equipo] || "";
 }
 
-
 window.onload = function () {
+  jornadaActual = obtenerPrimeraJornadaPendiente();
   reiniciarReferenciaJornada();
   mostrarPartidos();
   calcularClasificacion();
