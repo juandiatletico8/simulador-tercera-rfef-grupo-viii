@@ -231,7 +231,7 @@ const escudos = {
 // Jornada 18
 { jornada: 18, local: "CD La Virgen del Camino", visitante: "Júpiter Leonés", gLocal: 1, gVis: 0 },
 { jornada: 18, local: "UD Santa Marta de Tormes", visitante: "CD Mojados", gLocal: 1, gVis: 0 },
-{ jornada: 18, local: "CD Numancia de Soria B", visitante: "CD Colegios Diocesanos", gLocal: null, gVis: null }, // aplazado
+{ jornada: 18, local: "CD Numancia de Soria B", visitante: "CD Colegios Diocesanos", gLocal: 6, gVis: 1 }, // aplazado
 { jornada: 18, local: "Arandina CF", visitante: "Palencia CF", gLocal: 0, gVis: 1 },
 { jornada: 18, local: "Atlético Tordesillas", visitante: "Unionistas de Salamanca CF B", gLocal: 2, gVis: 0 },
 { jornada: 18, local: "Atlético Mansillés", visitante: "CD Guijuelo", gLocal: 2, gVis: 1 },
@@ -259,7 +259,7 @@ const escudos = {
 { jornada: 20, local: "Atlético Tordesillas", visitante: "CD Villaralbo", gLocal: 3, gVis: 1 },
 { jornada: 20, local: "Atlético Bembibre", visitante: "Júpiter Leonés", gLocal: 0, gVis: 1 },
 { jornada: 20, local: "CD Becerril", visitante: "SD Almazán", gLocal: 1, gVis: 3 },
-{ jornada: 20, local: "CD La Virgen del Camino", visitante: "Unionistas de Salamanca CF B", gLocal: null, gVis: null }, // aplazado
+{ jornada: 20, local: "CD La Virgen del Camino", visitante: "Unionistas de Salamanca CF B", gLocal: 1, gVis: 1 },
 
 // Jornada 21
 { jornada: 21, local: "CD Mirandés B", visitante: "CD Numancia de Soria B", gLocal: 2, gVis: 0 },
@@ -281,7 +281,7 @@ const escudos = {
 { jornada: 22, local: "Arandina CF", visitante: "CD Guijuelo", gLocal: 1, gVis: 2 },
 { jornada: 22, local: "CD Becerril", visitante: "Júpiter Leonés", gLocal: 2, gVis: 1 },
 { jornada: 22, local: "Palencia CF", visitante: "CD Mojados", gLocal: 2, gVis: 0 },
-{ jornada: 22, local: "CD La Virgen del Camino", visitante: "CD Villaralbo", gLocal: null, gVis: null }, // aplazado
+{ jornada: 22, local: "CD La Virgen del Camino", visitante: "CD Villaralbo", gLocal: 1, gVis: 0 },
 
 // Jornada 23
 { jornada: 23, local: "CD Mirandés B", visitante: "Atlético Tordesillas", gLocal: 0, gVis: 1 },
@@ -329,48 +329,48 @@ const escudos = {
 { jornada: 26, local: "CD Mojados", visitante: "CD Guijuelo", gLocal: 3, gVis: 1 },
 
 // Jornada 27
-{ jornada: 27, local: "CD Villaralbo", visitante: "Palencia CF", gLocal: null, gVis: null },
-{ jornada: 27, local: "CD Mirandés B", visitante: "CD La Virgen del Camino", gLocal: null, gVis: null },
-{ jornada: 27, local: "Atlético Mansillés", visitante: "UD Santa Marta de Tormes", gLocal: null, gVis: null },
-{ jornada: 27, local: "Atlético Tordesillas", visitante: "Atlético Bembibre", gLocal: null, gVis: null },
-{ jornada: 27, local: "CD Numancia de Soria B", visitante: "Arandina CF", gLocal: null, gVis: null },
-{ jornada: 27, local: "CD Palencia Cristo Atlético", visitante: "CD Becerril", gLocal: null, gVis: null },
-{ jornada: 27, local: "CD Colegios Diocesanos", visitante: "SD Almazán", gLocal: null, gVis: null },
-{ jornada: 27, local: "Unionistas de Salamanca CF B", visitante: "CD Mojados", gLocal: null, gVis: null },
-{ jornada: 27, local: "CD Guijuelo", visitante: "Júpiter Leonés", gLocal: null, gVis: null },
+{ jornada: 27, local: "CD Villaralbo", visitante: "Palencia CF", gLocal: 3, gVis: 2 },
+{ jornada: 27, local: "CD Mirandés B", visitante: "CD La Virgen del Camino", gLocal: 1, gVis: 1 },
+{ jornada: 27, local: "Atlético Mansillés", visitante: "UD Santa Marta de Tormes", gLocal: 2, gVis: 0 },
+{ jornada: 27, local: "Atlético Tordesillas", visitante: "Atlético Bembibre", gLocal: 4, gVis: 1 },
+{ jornada: 27, local: "CD Numancia de Soria B", visitante: "Arandina CF", gLocal: 0, gVis: 2 },
+{ jornada: 27, local: "CD Palencia Cristo Atlético", visitante: "CD Becerril", gLocal: 1, gVis: 1 },
+{ jornada: 27, local: "CD Colegios Diocesanos", visitante: "SD Almazán", gLocal: 1, gVis: 0 },
+{ jornada: 27, local: "Unionistas de Salamanca CF B", visitante: "CD Mojados", gLocal: 3, gVis: 1 },
+{ jornada: 27, local: "CD Guijuelo", visitante: "Júpiter Leonés", gLocal: 4, gVis: 0 },
 
 // Jornada 28
-{ jornada: 28, local: "UD Santa Marta de Tormes", visitante: "CD La Virgen del Camino", gLocal: null, gVis: null },
-{ jornada: 28, local: "Atlético Bembibre", visitante: "Atlético Mansillés", gLocal: null, gVis: null },
-{ jornada: 28, local: "Arandina CF", visitante: "Atlético Tordesillas", gLocal: null, gVis: null },
-{ jornada: 28, local: "CD Becerril", visitante: "CD Numancia de Soria B", gLocal: null, gVis: null },
-{ jornada: 28, local: "Palencia CF", visitante: "CD Palencia Cristo Atlético", gLocal: null, gVis: null },
-{ jornada: 28, local: "SD Almazán", visitante: "CD Villaralbo", gLocal: null, gVis: null },
-{ jornada: 28, local: "CD Mojados", visitante: "CD Colegios Diocesanos", gLocal: null, gVis: null },
-{ jornada: 28, local: "Júpiter Leonés", visitante: "Unionistas de Salamanca CF B", gLocal: null, gVis: null },
-{ jornada: 28, local: "CD Guijuelo", visitante: "CD Mirandés B", gLocal: null, gVis: null },
+{ jornada: 28, local: "UD Santa Marta de Tormes", visitante: "CD La Virgen del Camino", gLocal: 4, gVis: 0 },
+{ jornada: 28, local: "Atlético Bembibre", visitante: "Atlético Mansillés", gLocal: 1, gVis: 1 },
+{ jornada: 28, local: "Arandina CF", visitante: "Atlético Tordesillas", gLocal: 1, gVis: 2 },
+{ jornada: 28, local: "CD Becerril", visitante: "CD Numancia de Soria B", gLocal: 1, gVis: 1 },
+{ jornada: 28, local: "Palencia CF", visitante: "CD Palencia Cristo Atlético", gLocal: 0, gVis: 1 },
+{ jornada: 28, local: "SD Almazán", visitante: "CD Villaralbo", gLocal: 2, gVis: 1 },
+{ jornada: 28, local: "CD Mojados", visitante: "CD Colegios Diocesanos", gLocal: 0, gVis: 1 },
+{ jornada: 28, local: "Júpiter Leonés", visitante: "Unionistas de Salamanca CF B", gLocal: 0, gVis: 4 },
+{ jornada: 28, local: "CD Guijuelo", visitante: "CD Mirandés B", gLocal: 1, gVis: 0 },
 
 // Jornada 29
-{ jornada: 29, local: "CD Mirandés B", visitante: "UD Santa Marta de Tormes", gLocal: null, gVis: null },
-{ jornada: 29, local: "CD La Virgen del Camino", visitante: "Atlético Bembibre", gLocal: null, gVis: null },
-{ jornada: 29, local: "Atlético Mansillés", visitante: "Arandina CF", gLocal: null, gVis: null },
-{ jornada: 29, local: "Atlético Tordesillas", visitante: "CD Becerril", gLocal: null, gVis: null },
-{ jornada: 29, local: "CD Numancia de Soria B", visitante: "Palencia CF", gLocal: null, gVis: null },
-{ jornada: 29, local: "CD Palencia Cristo Atlético", visitante: "SD Almazán", gLocal: null, gVis: null },
-{ jornada: 29, local: "CD Villaralbo", visitante: "CD Mojados", gLocal: null, gVis: null },
-{ jornada: 29, local: "CD Colegios Diocesanos", visitante: "Júpiter Leonés", gLocal: null, gVis: null },
-{ jornada: 29, local: "Unionistas de Salamanca CF B", visitante: "CD Guijuelo", gLocal: null, gVis: null },
+{ jornada: 29, local: "CD Mirandés B", visitante: "UD Santa Marta de Tormes", gLocal: 2, gVis: 3 },
+{ jornada: 29, local: "CD La Virgen del Camino", visitante: "Atlético Bembibre", gLocal: 3, gVis: 1 },
+{ jornada: 29, local: "Atlético Mansillés", visitante: "Arandina CF", gLocal: 1, gVis: 1 },
+{ jornada: 29, local: "Atlético Tordesillas", visitante: "CD Becerril", gLocal: 2, gVis: 1 },
+{ jornada: 29, local: "CD Numancia de Soria B", visitante: "Palencia CF", gLocal: 2, gVis: 3 },
+{ jornada: 29, local: "CD Palencia Cristo Atlético", visitante: "SD Almazán", gLocal: 4, gVis: 2 },
+{ jornada: 29, local: "CD Villaralbo", visitante: "CD Mojados", gLocal: 1, gVis: 1 },
+{ jornada: 29, local: "CD Colegios Diocesanos", visitante: "Júpiter Leonés", gLocal: 0, gVis: 3 },
+{ jornada: 29, local: "Unionistas de Salamanca CF B", visitante: "CD Guijuelo", gLocal: 1, gVis: 2 },
 
 // Jornada 30
-{ jornada: 30, local: "Atlético Bembibre", visitante: "UD Santa Marta de Tormes", gLocal: null, gVis: null },
-{ jornada: 30, local: "Arandina CF", visitante: "CD La Virgen del Camino", gLocal: null, gVis: null },
-{ jornada: 30, local: "CD Becerril", visitante: "Atlético Mansillés", gLocal: null, gVis: null },
-{ jornada: 30, local: "Palencia CF", visitante: "Atlético Tordesillas", gLocal: null, gVis: null },
-{ jornada: 30, local: "SD Almazán", visitante: "CD Numancia de Soria B", gLocal: null, gVis: null },
-{ jornada: 30, local: "CD Mojados", visitante: "CD Palencia Cristo Atlético", gLocal: null, gVis: null },
-{ jornada: 30, local: "Júpiter Leonés", visitante: "CD Villaralbo", gLocal: null, gVis: null },
-{ jornada: 30, local: "CD Guijuelo", visitante: "CD Colegios Diocesanos", gLocal: null, gVis: null },
-{ jornada: 30, local: "Unionistas de Salamanca CF B", visitante: "CD Mirandés B", gLocal: null, gVis: null },
+{ jornada: 30, local: "Atlético Bembibre", visitante: "UD Santa Marta de Tormes", gLocal: 2, gVis: 2 },
+{ jornada: 30, local: "Arandina CF", visitante: "CD La Virgen del Camino", gLocal: 3, gVis: 1 },
+{ jornada: 30, local: "CD Becerril", visitante: "Atlético Mansillés", gLocal: 0, gVis: 2 },
+{ jornada: 30, local: "Palencia CF", visitante: "Atlético Tordesillas", gLocal: 1, gVis: 2 },
+{ jornada: 30, local: "SD Almazán", visitante: "CD Numancia de Soria B", gLocal: 5, gVis: 0 },
+{ jornada: 30, local: "CD Mojados", visitante: "CD Palencia Cristo Atlético", gLocal: 1, gVis: 2 },
+{ jornada: 30, local: "Júpiter Leonés", visitante: "CD Villaralbo", gLocal: 1, gVis: 2 },
+{ jornada: 30, local: "CD Guijuelo", visitante: "CD Colegios Diocesanos", gLocal: 4, gVis: 0 },
+{ jornada: 30, local: "Unionistas de Salamanca CF B", visitante: "CD Mirandés B", gLocal: 1, gVis: 2 },
 
 // Jornada 31
 { jornada: 31, local: "CD Mirandés B", visitante: "Atlético Bembibre", gLocal: null, gVis: null },
