@@ -335,6 +335,10 @@ window.onload = function () {
   background: #f39c12;
 }
 
+.punto-morado {
+  background: #8e44ad;
+}
+
 .punto-rojo {
   background: #e74c3c;
 }
@@ -351,4 +355,45 @@ window.onload = function () {
   width: 20px;
   height: 20px;
   object-fit: contain;
+}
+
+.nota-aplazado {
+  font-size: 12px;
+  color: #777;
+  margin: -4px 0 10px 10px;
+  font-style: italic;
+}
+
+.pos-arrastre {
+  background: #f3e8ff; /* morado clarito */
+  position: relative;
+}
+
+.pos-arrastre td:first-child {
+  border-left: 6px solid #8e44ad; /* morado */
+  background: #f3e8ff; /* fondo suave */
+}
+
+.mensaje-final {
+  margin-top: 22px;
+  margin-bottom: 14px;
+  font-size: 15px;
+  color: #333;
+  line-height: 1.4;
+}
+
+.btn-descargar {
+  background: #2f7d32;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 18px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-descargar:hover {
+  background: #256428;
 }

@@ -198,7 +198,6 @@ const escudos = {
 // Jornada 15
 { jornada: 15, local: "CD Mirandés B", visitante: "CD Colegios Diocesanos", gLocal: 3, gVis: 0 },
 { jornada: 15, local: "CD La Virgen del Camino", visitante: "Palencia CF", gLocal: 2, gVis: 0 },
-{ jornada: 15, local: "Atlético Mansillés", visitante: "SD Almazán", gLocal: null, gVis: null }, // aplazado
 { jornada: 15, local: "CD Villaralbo", visitante: "Unionistas de Salamanca CF B", gLocal: 0, gVis: 0 },
 { jornada: 15, local: "UD Santa Marta de Tormes", visitante: "CD Becerril", gLocal: 5, gVis: 0 },
 { jornada: 15, local: "Atlético Bembibre", visitante: "Arandina CF", gLocal: 1, gVis: 1 },
@@ -373,15 +372,15 @@ const escudos = {
 { jornada: 30, local: "Unionistas de Salamanca CF B", visitante: "CD Mirandés B", gLocal: 1, gVis: 2 },
 
 // Jornada 31
-{ jornada: 31, local: "CD Mirandés B", visitante: "Atlético Bembibre", gLocal: null, gVis: null },
-{ jornada: 31, local: "UD Santa Marta de Tormes", visitante: "Arandina CF", gLocal: null, gVis: null },
-{ jornada: 31, local: "CD La Virgen del Camino", visitante: "CD Becerril", gLocal: null, gVis: null },
-{ jornada: 31, local: "Atlético Mansillés", visitante: "Palencia CF", gLocal: null, gVis: null },
-{ jornada: 31, local: "Atlético Tordesillas", visitante: "SD Almazán", gLocal: null, gVis: null },
-{ jornada: 31, local: "CD Numancia de Soria B", visitante: "CD Mojados", gLocal: null, gVis: null },
-{ jornada: 31, local: "CD Palencia Cristo Atlético", visitante: "Júpiter Leonés", gLocal: null, gVis: null },
-{ jornada: 31, local: "CD Villaralbo", visitante: "CD Guijuelo", gLocal: null, gVis: null },
-{ jornada: 31, local: "CD Colegios Diocesanos", visitante: "Unionistas de Salamanca CF B", gLocal: null, gVis: null },
+{ jornada: 31, local: "CD Mirandés B", visitante: "Atlético Bembibre", gLocal: 2, gVis: 2 },
+{ jornada: 31, local: "UD Santa Marta de Tormes", visitante: "Arandina CF", gLocal: 1, gVis: 1 },
+{ jornada: 31, local: "CD La Virgen del Camino", visitante: "CD Becerril", gLocal: 0, gVis: 1 },
+{ jornada: 31, local: "Atlético Mansillés", visitante: "Palencia CF", gLocal: 2, gVis: 1 },
+{ jornada: 31, local: "Atlético Tordesillas", visitante: "SD Almazán", gLocal: 1, gVis: 0 },
+{ jornada: 31, local: "CD Numancia de Soria B", visitante: "CD Mojados", gLocal: 1, gVis: 1 },
+{ jornada: 31, local: "CD Palencia Cristo Atlético", visitante: "Júpiter Leonés", gLocal: 1, gVis: 0 },
+{ jornada: 31, local: "CD Villaralbo", visitante: "CD Guijuelo", gLocal: 1, gVis: 1 },
+{ jornada: 31, local: "CD Colegios Diocesanos", visitante: "Unionistas de Salamanca CF B", gLocal: 0, gVis: 1 },
 
 // Jornada 32
 { jornada: 32, local: "Arandina CF", visitante: "Atlético Bembibre", gLocal: null, gVis: null },
@@ -415,6 +414,9 @@ const escudos = {
 { jornada: 34, local: "Unionistas de Salamanca CF B", visitante: "CD Numancia de Soria B", gLocal: null, gVis: null },
 { jornada: 34, local: "CD Colegios Diocesanos", visitante: "CD Palencia Cristo Atlético", gLocal: null, gVis: null },
 { jornada: 34, local: "CD Mirandés B", visitante: "CD Villaralbo", gLocal: null, gVis: null },
+{ jornada: 34, local: "Atlético Mansillés", visitante: "SD Almazán", gLocal: null, gVis: null, aplazado: true },
+
+
 
 ];
 
@@ -761,10 +763,10 @@ function mostrarPartidos() {
     fila.className = "fila-partido";
 
     const spanLocal = document.createElement("span");
-    spanLocal.className = "equipo-local";
-    spanLocal.innerHTML =
-      `<img class="escudo" src="${obtenerEscudo(p.local)}" alt="${p.local}">
-       <span>${p.local}</span>`;
+spanLocal.className = "equipo-local";
+spanLocal.innerHTML =
+  `<img class="escudo" src="${obtenerEscudo(p.local)}" alt="${p.local}">
+   <span>${p.local}${p.aplazado ? " *" : ""}</span>`;
 
     const inputLocal = document.createElement("input");
     inputLocal.type = "number";
@@ -783,10 +785,10 @@ function mostrarPartidos() {
     inputVis.value = partidoJugado(p) ? p.gVis : "";
 
     const spanVis = document.createElement("span");
-    spanVis.className = "equipo-visitante";
-    spanVis.innerHTML =
-      `<img class="escudo" src="${obtenerEscudo(p.visitante)}" alt="${p.visitante}">
-       <span>${p.visitante}</span>`;
+spanVis.className = "equipo-visitante";
+spanVis.innerHTML =
+  `<img class="escudo" src="${obtenerEscudo(p.visitante)}" alt="${p.visitante}">
+   <span>${p.visitante}${p.aplazado ? " *" : ""}</span>`;
 
     fila.appendChild(spanLocal);
     fila.appendChild(inputLocal);
@@ -795,17 +797,25 @@ function mostrarPartidos() {
     fila.appendChild(spanVis);
 
     bloque.appendChild(fila);
+
+if (p.aplazado) {
+  const nota = document.createElement("div");
+  nota.className = "nota-aplazado";
+  nota.textContent = "* Partido aplazado";
+  bloque.appendChild(nota);
+}
   }
 
   contenedor.appendChild(bloque);
 
   const inputs = contenedor.querySelectorAll('input[type="number"]');
-  for (let i = 0; i < inputs.length; i++) {
-    inputs[i].addEventListener("input", function () {
-      leerResultados();
-      calcularClasificacion();
-    });
-  }
+for (let i = 0; i < inputs.length; i++) {
+  inputs[i].addEventListener("input", function () {
+    leerResultados();
+    calcularClasificacion();
+    actualizarBotonesJornada();
+  });
+}
 
   actualizarBotonesJornada();
 }
@@ -823,6 +833,8 @@ function leerResultados() {
     partidos[i].gLocal = valorLocal === "" ? null : parseInt(valorLocal, 10);
     partidos[i].gVis = valorVis === "" ? null : parseInt(valorVis, 10);
   }
+
+  actualizarBotonesJornada();
 }
 
 function obtenerClasificacionActual() {
@@ -848,6 +860,7 @@ function renderizarResumenFinal(clasificacion) {
 
   const campeon = clasificacion[0];
   const playoff = clasificacion.slice(1, 5);
+  const arrastre = clasificacion.slice(13, 15);
   const descenso = clasificacion.slice(-3);
 
   function renderEquipoResumen(equipo) {
@@ -880,12 +893,28 @@ function renderizarResumenFinal(clasificacion) {
       </div>
 
       <div class="linea-resumen">
+        <span class="punto-resumen punto-morado"></span>
+        <div>
+          <strong>Posibles arrastres:</strong>
+          ${arrastre.map(renderEquipoResumen).join("")}
+        </div>
+      </div>
+
+      <div class="linea-resumen">
         <span class="punto-resumen punto-rojo"></span>
         <div>
           <strong>Descienden a Regional:</strong>
           ${descenso.map(renderEquipoResumen).join("")}
         </div>
       </div>
+
+      <div class="mensaje-final">
+        Descarga y envía a Juandi tu pronóstico y a final de temporada comprobará tu acierto
+      </div>
+
+      <button class="btn-descargar" onclick="descargarClasificacionFinal()">
+        Descargar clasificación
+      </button>
     </div>
   `;
 }
@@ -946,12 +975,16 @@ function calcularClasificacion() {
     tr.dataset.equipo = e.equipo;
 
     if (i === 0) {
-      tr.classList.add("pos-ascenso");
-    } else if (i >= 1 && i <= 4) {
-      tr.classList.add("pos-playoff");
-    } else if (i >= clasificacion.length - 3) {
-      tr.classList.add("pos-descenso");
-    }
+  tr.classList.add("pos-ascenso");
+} else if (i >= 1 && i <= 4) {
+  tr.classList.add("pos-playoff");
+} else if (i === 12) {
+  tr.classList.add("pos-playout");
+} else if (i === 13 || i === 14) {
+  tr.classList.add("pos-arrastre");
+} else if (i >= 15) {
+  tr.classList.add("pos-descenso");
+}
 
     let flecha = "";
     const posicionBase = posicionesBaseJornada[e.equipo];
@@ -1004,7 +1037,6 @@ function actualizarBotonesJornada() {
 
   if (!btnAnterior || !btnSiguiente) return;
 
-  // Si estamos en la pantalla final
   if (simulacionFinalizada) {
     btnAnterior.disabled = false;
     btnAnterior.style.display = "";
@@ -1013,18 +1045,18 @@ function actualizarBotonesJornada() {
   }
 
   const indice = jornadasDisponibles.indexOf(jornadaActual);
+  const ultimaJornada = jornadasDisponibles[jornadasDisponibles.length - 1];
+  const estamosEnUltima = jornadaActual === ultimaJornada;
+  const jornadaActualCompleta = jornadaCompleta(jornadaActual);
 
   btnAnterior.style.display = "";
   btnSiguiente.style.display = "";
 
   btnAnterior.disabled = indice <= 0;
 
-  const esUltimaJornada = indice === jornadasDisponibles.length - 1;
-  const ultimaJornadaCompleta = jornadaCompleta(jornadaActual);
-
-  if (esUltimaJornada && ultimaJornadaCompleta) {
-    btnSiguiente.disabled = false;
+  if (estamosEnUltima) {
     btnSiguiente.textContent = "Finalizar";
+    btnSiguiente.disabled = !jornadaActualCompleta;
   } else {
     btnSiguiente.textContent = "→";
     btnSiguiente.disabled = indice === -1 || indice >= jornadasDisponibles.length - 1;
@@ -1096,38 +1128,23 @@ function finalizarSimulacion() {
   if (estado) {
     estado.textContent = "Simulación finalizada.";
   }
-}
-
-function finalizarSimulacion() {
-  leerResultados();
-
-  const clasificacion = obtenerClasificacionActual();
-  simulacionFinalizada = true;
-
-  const btnSiguiente = document.getElementById("btn-siguiente");
-  if (btnSiguiente) {
-    btnSiguiente.style.display = "none";
-  }
-
-  const titulo = document.getElementById("titulo-jornada");
-  if (titulo) {
-    titulo.textContent = "Resumen final";
-  }
-
-  const botonCalcular = document.getElementById("calcular");
-  if (botonCalcular) {
-    botonCalcular.style.display = "none";
-  }
-
-  renderizarResumenFinal(clasificacion);
-  calcularClasificacion();
-
-  const estado = document.getElementById("estado");
-  if (estado) {
-    estado.textContent = "Simulación finalizada.";
-  }
 
   actualizarBotonesJornada();
+}
+
+function descargarClasificacionFinal() {
+  const tabla = document.getElementById("tabla-clasificacion");
+  if (!tabla) return;
+
+  html2canvas(tabla, {
+    backgroundColor: "#ffffff",
+    scale: 2
+  }).then((canvas) => {
+    const enlace = document.createElement("a");
+    enlace.download = "clasificacion-final.png";
+    enlace.href = canvas.toDataURL("image/png");
+    enlace.click();
+  });
 }
 
 function irAJornadaSiguiente() {
