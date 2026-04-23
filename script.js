@@ -204,6 +204,7 @@ const escudos = {
 { jornada: 15, local: "CD Palencia Cristo Atlético", visitante: "CD Guijuelo", gLocal: 1, gVis: 2 },
 { jornada: 15, local: "Atlético Tordesillas", visitante: "CD Mojados", gLocal: 4, gVis: 1 },
 { jornada: 15, local: "CD Numancia de Soria B", visitante: "Júpiter Leonés", gLocal: 2, gVis: 1 },
+{ jornada: 15, local: "Atlético Mansillés", visitante: "SD Almazán", gLocal: 1, gVis: 1 },
 
 // Jornada 16
 { jornada: 16, local: "CD Mirandés B", visitante: "Arandina CF", gLocal: 3, gVis: 0 },
@@ -414,7 +415,7 @@ const escudos = {
 { jornada: 34, local: "Unionistas de Salamanca CF B", visitante: "CD Numancia de Soria B", gLocal: null, gVis: null },
 { jornada: 34, local: "CD Colegios Diocesanos", visitante: "CD Palencia Cristo Atlético", gLocal: null, gVis: null },
 { jornada: 34, local: "CD Mirandés B", visitante: "CD Villaralbo", gLocal: null, gVis: null },
-{ jornada: 34, local: "Atlético Mansillés", visitante: "SD Almazán", gLocal: null, gVis: null, aplazado: true },
+
 
 
 
