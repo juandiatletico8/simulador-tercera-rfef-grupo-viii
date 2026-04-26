@@ -386,13 +386,13 @@ const escudos = {
 // Jornada 32
 { jornada: 32, local: "Arandina CF", visitante: "Atlético Bembibre", gLocal: null, gVis: null },
 { jornada: 32, local: "CD Becerril", visitante: "UD Santa Marta de Tormes", gLocal: null, gVis: null },
-{ jornada: 32, local: "Palencia CF", visitante: "CD La Virgen del Camino", gLocal: null, gVis: null },
+{ jornada: 32, local: "Palencia CF", visitante: "CD La Virgen del Camino", gLocal: 3, gVis: 2 },
 { jornada: 32, local: "SD Almazán", visitante: "Atlético Mansillés", gLocal: null, gVis: null },
 { jornada: 32, local: "CD Mojados", visitante: "Atlético Tordesillas", gLocal: null, gVis: null },
-{ jornada: 32, local: "Júpiter Leonés", visitante: "CD Numancia de Soria B", gLocal: null, gVis: null },
+{ jornada: 32, local: "Júpiter Leonés", visitante: "CD Numancia de Soria B", gLocal: 3, gVis: 0 },
 { jornada: 32, local: "CD Guijuelo", visitante: "CD Palencia Cristo Atlético", gLocal: null, gVis: null },
 { jornada: 32, local: "Unionistas de Salamanca CF B", visitante: "CD Villaralbo", gLocal: null, gVis: null },
-{ jornada: 32, local: "CD Colegios Diocesanos", visitante: "CD Mirandés B", gLocal: null, gVis: null },
+{ jornada: 32, local: "CD Colegios Diocesanos", visitante: "CD Mirandés B", gLocal: 3, gVis: 1 },
 
 // Jornada 33
 { jornada: 33, local: "Arandina CF", visitante: "CD Mirandés B", gLocal: null, gVis: null },
