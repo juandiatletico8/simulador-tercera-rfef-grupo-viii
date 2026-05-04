@@ -861,7 +861,6 @@ function renderizarResumenFinal(clasificacion) {
 
   const campeon = clasificacion[0];
   const playoff = clasificacion.slice(1, 5);
-  const arrastre = clasificacion.slice(13, 15);
   const descenso = clasificacion.slice(-3);
 
   function renderEquipoResumen(equipo) {
@@ -890,14 +889,6 @@ function renderizarResumenFinal(clasificacion) {
         <div>
           <strong>Play-off:</strong>
           ${playoff.map(renderEquipoResumen).join("")}
-        </div>
-      </div>
-
-      <div class="linea-resumen">
-        <span class="punto-resumen punto-morado"></span>
-        <div>
-          <strong>Posibles arrastres:</strong>
-          ${arrastre.map(renderEquipoResumen).join("")}
         </div>
       </div>
 
@@ -979,10 +970,6 @@ function calcularClasificacion() {
   tr.classList.add("pos-ascenso");
 } else if (i >= 1 && i <= 4) {
   tr.classList.add("pos-playoff");
-} else if (i === 12) {
-  tr.classList.add("pos-playout");
-} else if (i === 13 || i === 14) {
-  tr.classList.add("pos-arrastre");
 } else if (i >= 15) {
   tr.classList.add("pos-descenso");
 }
