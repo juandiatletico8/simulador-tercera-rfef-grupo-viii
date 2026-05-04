@@ -395,15 +395,15 @@ const escudos = {
 { jornada: 32, local: "CD Colegios Diocesanos", visitante: "CD Mirandés B", gLocal: 3, gVis: 1 },
 
 // Jornada 33
-{ jornada: 33, local: "Arandina CF", visitante: "CD Mirandés B", gLocal: null, gVis: null },
-{ jornada: 33, local: "Atlético Bembibre", visitante: "CD Becerril", gLocal: null, gVis: null },
-{ jornada: 33, local: "UD Santa Marta de Tormes", visitante: "Palencia CF", gLocal: null, gVis: null },
-{ jornada: 33, local: "CD La Virgen del Camino", visitante: "SD Almazán", gLocal: null, gVis: null },
-{ jornada: 33, local: "Atlético Mansillés", visitante: "CD Mojados", gLocal: null, gVis: null },
-{ jornada: 33, local: "Atlético Tordesillas", visitante: "Júpiter Leonés", gLocal: null, gVis: null },
-{ jornada: 33, local: "CD Numancia de Soria B", visitante: "CD Guijuelo", gLocal: null, gVis: null },
-{ jornada: 33, local: "CD Palencia Cristo Atlético", visitante: "Unionistas de Salamanca CF B", gLocal: null, gVis: null },
-{ jornada: 33, local: "CD Villaralbo", visitante: "CD Colegios Diocesanos", gLocal: null, gVis: null },
+{ jornada: 33, local: "Arandina CF", visitante: "CD Mirandés B", gLocal: 2, gVis: 1 },
+{ jornada: 33, local: "Atlético Bembibre", visitante: "CD Becerril", gLocal: 4, gVis: 1 },
+{ jornada: 33, local: "UD Santa Marta de Tormes", visitante: "Palencia CF", gLocal: 2, gVis: 1 },
+{ jornada: 33, local: "CD La Virgen del Camino", visitante: "SD Almazán", gLocal: 1, gVis: 2 },
+{ jornada: 33, local: "Atlético Mansillés", visitante: "CD Mojados", gLocal: 0, gVis: 1 },
+{ jornada: 33, local: "Atlético Tordesillas", visitante: "Júpiter Leonés", gLocal: 1, gVis: 2 },
+{ jornada: 33, local: "CD Numancia de Soria B", visitante: "CD Guijuelo", gLocal: 0, gVis: 2 },
+{ jornada: 33, local: "CD Palencia Cristo Atlético", visitante: "Unionistas de Salamanca CF B", gLocal: 0, gVis: 1 },
+{ jornada: 33, local: "CD Villaralbo", visitante: "CD Colegios Diocesanos", gLocal: 2, gVis: 1 },
 
 // Jornada 34
 { jornada: 34, local: "CD Becerril", visitante: "Arandina CF", gLocal: null, gVis: null },
